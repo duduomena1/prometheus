@@ -7,8 +7,7 @@ services:
     ports:
      - 9092:9090
     volumes: 
-     - ./prometheus:etc/prometheus
-     - prom_data:/prometheus
+     - ./prometheus:/etc/prometheus
     networks:
       - prometheus
 networks:
