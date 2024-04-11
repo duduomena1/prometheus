@@ -1,0 +1,16 @@
+version: "3"
+
+services: 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+     - 9092:9090
+    volumes: 
+     - ./prometheus:etc/prometheus
+     - prom_data:/prometheus
+    networks:
+      - prometheus
+networks:
+  prometheus:
+   name: prometheus
