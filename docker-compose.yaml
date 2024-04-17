@@ -1,5 +1,6 @@
 version: "3"
-
+volumes:
+  prometheus-data: {}
 services: 
   prometheus:
     image: prom/prometheus
@@ -8,6 +9,7 @@ services:
      - 9092:9090
     volumes: 
      - ./prometheu:/etc/prometheus
+     - prometheus-data:/prometheus
     networks:
       - prometheus
 networks:
