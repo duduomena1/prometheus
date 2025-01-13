@@ -2,7 +2,7 @@ services:
     web:
         image: kubedevio/rotten-potatoes:v1
         ports:
-            - 8080:5000
+                - 4000:5000
         networks:
             - prometheus
         depends_on:
@@ -23,18 +23,15 @@ services:
             MONGO_INITDB_ROOT_USERNAME: "admin"
             MONGO_INITDB_ROOT_PASSWORD: "adminpwd"
     prometheus:
-        image: prom/prometheus
-        container_name: prometheus
+        image: prom/prometheus:latest
         ports:
             - 9092:9090
-        volumes:
-            - ./prometheu:/etc/prometheus
-            - prometheus-data:/prometheus
         networks:
             - prometheus
+        volumes:
+            - ./prometheus.yaml:/etc/prometheus/prometheus.yml
 networks:
     prometheus:
         driver: bridge
 volumes:
-    prometheus-data:
     db_mongo:
