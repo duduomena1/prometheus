@@ -1,17 +1,40 @@
-version: "3"
-volumes:
-  prometheus-data: {}
-services: 
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    ports:
-     - 9092:9090
-    volumes: 
-     - ./prometheu:/etc/prometheus
-     - prometheus-data:/prometheus
-    networks:
-      - prometheus
+services:
+    web:
+        image: kubedevio/rotten-potatoes:v1
+        ports:
+            - 8080:5000
+        networks:
+            - prometheus
+        depends_on:
+            - mongodb
+        environment:
+            MONGODB_DB: "admin"
+            MONGODB_HOST: "mongodb"
+            MONGODB_PORT: 27017
+            MONGODB_USERNAME: "admin"
+            MONGODB_PASSWORD: "adminpwd"
+    mongodb:
+        image: mongo:7.0
+        volumes:
+            - db_mongo:/data/db
+        networks:
+            - prometheus
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: "admin"
+            MONGO_INITDB_ROOT_PASSWORD: "adminpwd"
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        ports:
+            - 9092:9090
+        volumes:
+            - ./prometheu:/etc/prometheus
+            - prometheus-data:/prometheus
+        networks:
+            - prometheus
 networks:
-  prometheus:
-   name: prometheus
+    prometheus:
+        driver: bridge
+volumes:
+    prometheus-data:
+    db_mongo:
